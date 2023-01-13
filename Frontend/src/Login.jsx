@@ -8,7 +8,7 @@ export const Login = (props) => {
         e.preventDefault();
         console.log(email);
 
-        fetch("http://localhost:5000/login", {
+        fetch("http://localhost:5000/api/users/login", {
             method:"POST",
             crossDomain:true,
             headers:{

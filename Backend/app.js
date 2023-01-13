@@ -28,7 +28,7 @@ mongoose.connect(url, {useNewUrlParser: true,})
         
         app.listen(process.env.PORT,()=>{
 
-            console.log("Server started and listening on ", process.env.PORT)
+            console.log("Server started and listening on port", process.env.PORT)
         })
     })
     .catch(e=> console.log(e))

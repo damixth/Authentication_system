@@ -8,7 +8,7 @@ export const Register = (props) => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         console.log(email, name, pass);
-        fetch("http://localhost:5000/register", {
+        fetch("http://localhost:5000/api/users/register", {
             method:"POST",
             crossDomain:true,
             headers:{
