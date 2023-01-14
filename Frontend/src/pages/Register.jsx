@@ -1,31 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useRegister } from '../hooks/useRegister'
 
 export const Register = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
+    const { signup, error, isLoading} = useRegister();
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
         console.log(email, name, pass);
-        fetch("http://localhost:5000/api/users/register", {
-            method:"POST",
-            crossDomain:true,
-            headers:{
-                "Content-Type":"application/json",
-                Accept:"application/json",
-                "Access-Control-Allow-Origin":"*",
-            },
-            body:JSON.stringify({
-                fullname:name,
-                email,
-                password:pass
-            }),
-        }).then((res)=>res.json())
-        .then((data)=>{
-            console.log(data,"userRegister")
-        })
+
+        await signup(name, email, pass);
+
     }
 
     return (
@@ -41,7 +29,8 @@ export const Register = () => {
                 <label htmlFor="password">Password</label>
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password"/>
 
-                <button type="submit">Log in</button>
+                <button disabled={isLoading} type="submit">Register</button>
+                {error && <div className='error'>{error}</div>}
             </form>
             <button className="link-btn">
                 <Link to="/login" style={{ color: 'white', textDecoration: 'underline'}}>
