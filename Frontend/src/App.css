@@ -45,7 +45,9 @@ button {
 }
 
 .link-btn {
+    padding: 10px;
     background: none;
     color: white;
     text-decoration: underline;
 }
+

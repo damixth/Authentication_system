@@ -1,37 +1,41 @@
-import React, { useState } from 'react';
-import { Login } from "./Login";
-import { Register } from "./Register"
-import  Profile  from "./Profile"
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useAuthContext } from './hooks/useAuthContext'
+
+import  { Login }  from "./pages/Login";
+import  { Register } from "./pages/Register"
+import   Profile from "./pages/Profile"
 import './App.css';
-import { BrowserRouter as Router, Switch, 
-    Route, Redirect,} from "react-router-dom";
+
 
 function App() {
-	const [currentForm, setCurrentForm] = useState('login');
 
-	const toggleForm = (formName) => {
-		setCurrentForm(formName);
-	}
+	const { user } = useAuthContext()
 	
 	return (
-		<div className="App">
+		<div className="App">		
 			
-			
-			{
-				currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
+			<BrowserRouter>
 				
-			}
-			{/* <>
-				<Router>
+				<Routes>
 
-					<switch>
-						
-						<Route path="/profile" component={Profile} />
-						
-					</switch>
+					<Route
+					path="/"
+					element={user ? <Profile /> : <Navigate to ="/login" />}
+					/>
 
-				</Router>
-			</> */}
+					<Route
+					path="/login"
+					element={!user ? <Login /> :  <Navigate to ="/" />}
+					/>
+
+					<Route
+					path="/register"
+					element={!user ? <Register /> :  <Navigate to ="/" />}
+					/>
+
+				</Routes>
+				
+			</BrowserRouter>
 		</div>
 	);
 }

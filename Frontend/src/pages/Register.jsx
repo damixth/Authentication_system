@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-export const Register = (props) => {
+export const Register = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
@@ -42,7 +43,10 @@ export const Register = (props) => {
 
                 <button type="submit">Log in</button>
             </form>
-            <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
+            <button className="link-btn">
+                <Link to="/login" style={{ color: 'white', textDecoration: 'underline'}}>
+                Already have an account? Login here.</Link>
+            </button> 
         </div>
     )
 }
