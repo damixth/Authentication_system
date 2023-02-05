@@ -1,35 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useLogin } from '../hooks/useLogin'
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const { login, error, isLoading } = useLogin()
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
         console.log(email);
 
-        fetch("http://localhost:5000/api/users/login", {
-            method:"POST",
-            crossDomain:true,
-            headers:{
-                "Content-Type":"application/json",
-                Accept:"application/json",
-                "Access-Control-Allow-Origin":"*",
-            },
-            body:JSON.stringify({
-                email,
-                password:pass
-            }),
-        }).then((res)=>res.json())
-        .then((data)=>{
-            console.log(data,"userRegister")
-            if(data.status =="ok"){
-                alert("login successful")
-                window.localStorage.setItem("token",data.data)
-                window.location.href = "./profile"
-            }
-        })
+        await login(email, pass);
+
     }
 
     return (
@@ -37,12 +20,15 @@ export const Login = () => {
             <h2>Login</h2>
             <form className="loginForm" onSubmit={handleSubmit}>
                 <label htmlFor="email">Email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="abcd@gmail.com" id="email" name="email"/>
+                <input value={email} onChange={(e) => setEmail(e.target.value)} 
+                type="email" placeholder="abcd@gmail.com" id="email" name="email"/>
 
                 <label htmlFor="password">Password</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password"/>
+                <input value={pass} onChange={(e) => setPass(e.target.value)} 
+                type="password" placeholder="********" id="password" name="password"/>
 
-                <button type="submit">Log in</button>
+                <button type="submit" disabled={isLoading}>Log in</button>
+                {error && <div className='error'>{error}</div>}
             </form>
             <button className="link-btn">
                 <Link to="/register" style={{ margin: '0.5rem 0', color: 'white', textDecoration: 'underline'}}>

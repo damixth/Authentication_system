@@ -1,4 +1,5 @@
 const User = require('../models/userDetails')
+const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 const createToken = (_id) => {
@@ -36,7 +37,16 @@ const registerUser = async (req, res) => {
     }
 }
 
+const fetchUserDetails = async (req, res) => {
+    const user_id = req.user._id;
+
+    const userInfo = await User.find({ user_id }).sort({ createdAt: -1 })
+
+    res.status(200).json(userInfo)
+} 
+
 module.exports = {
     loginUser,
-    registerUser
+    registerUser,
+    fetchUserDetails
 }

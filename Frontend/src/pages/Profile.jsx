@@ -1,69 +1,57 @@
-import React, { Component, useState } from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { useLogout } from '../hooks/useLogout'
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
 
-export default class Profile extends Component {
+ const ProfilePage = () => {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            userData: ""
-        }
+    const { logout } = useLogout() 
 
+    const handleClick = () => {
+        logout()
     }
 
-    componentDidMount(){
-        fetch("http://localhost:5000/profile", {
-            method:"POST",
-            crossDomain:true,
-            headers:{
-                "Content-Type":"application/json",
-                Accept:"application/json",
-                "Access-Control-Allow-Origin":"*",
-            },
-            body:JSON.stringify({
-                token:window.localStorage.getItem("token"),
-            }),
-        }).then((res)=>res.json())
-        .then((data)=>{
-            console.log(data,"userData")
-            this.setState({ userData: data.data })
-        })
-    }
-
-    render() {
+    // componentDidMount(){
+    //     fetch("http://localhost:5000/api/users/profile", {
+    //         method:"POST",
+    //         crossDomain:true,
+    //         headers:{
+    //             "Content-Type":"application/json",
+    //             Accept:"application/json",
+    //             "Access-Control-Allow-Origin":"*",
+    //         },
+    //         body:JSON.stringify({
+    //             token:window.localStorage.getItem("token"),
+    //         }),
+    //     }).then((res)=>res.json())
+    //     .then((data)=>{
+    //         console.log(data,"userData")
+    //         this.setState({ userData: data.data })
+    //     })
+    // }
+   
         return (
-            <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                Full Name
-                </Typography>
-                <Typography variant="h5" component="div">
-                {this.state.userData.fullname}
-                </Typography>
-
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                Email
-                </Typography>
-                <Typography variant="h5" component="div">
-                {this.state.userData.email}
-                </Typography>
-               
+            <div className='profile'>
+                <p>
+                    Full Name
+                </p>
                 
-            </CardContent>
-            </Card>
+                <div>
+                    {/* {this.state.userData.fullname} */}
+                </div>
+
+                <div>
+                    Email
+                </div>
+                <div>
+                    {/* {this.state.userData.email} */}
+                </div>
+
+                <div>
+                    <button onClick={handleClick}>Log out</button>    
+                </div> 
+            </div>
+            
         );
-    }
+    
 }
+
+export default ProfilePage;

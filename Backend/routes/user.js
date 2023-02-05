@@ -2,7 +2,8 @@ const express = require('express')
 
 const router = express.Router()
 
-const { loginUser, registerUser } = require('../controllers/userController')
+const { loginUser, registerUser, fetchUserDetails } = require('../controllers/userController')
+const requireAuth = require('../middleware/requireAuth')
 
 // register route
 router.post("/register", registerUser)
@@ -10,22 +11,10 @@ router.post("/register", registerUser)
 //login route
 router.post("/login", loginUser)
 
-// router.post("/profile",async(req,res)=>{
-//     const [token] = req.body
+// require Auth for all routes
+router.use(requireAuth)
 
-//     try {
-//         const user=jwt.verify(token,JWT_SECRET)
-//         const userEmail = user.email
-//         User.findOne({ email: userEmail }).then((data) => {
-//             res.send({  status:"ok", data:data })
-//         })
-//         .catch((error) => {
-//             res.send({ status:"error", data:error })
-//         })
-
-//     } catch (error) {
-//         res.send({status:"Something went wrong!"})
-//     }
-// });
+// profile route
+router.get("/profile", fetchUserDetails);
 
 module.exports = router
